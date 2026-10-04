@@ -99,17 +99,33 @@ npx wrangler r2 bucket create heng-images-preview
 pnpm db:migrate
 ```
 
-### 4. 设置空间暗号
+### 4. 环境变量与空间暗号
 
-设置属于你们两个人的私密暗号（比如纪念日）：
+#### 变量清单一览
 
-```bash
-# 设置通行暗号（直接输入明文即可，也可输入加盐哈希）
-npx wrangler secret put AUTH_SECRET
+| 变量名称 | 类型 | 必填 | 说明 | 示例值 |
+|---|---|---|---|---|
+| `AUTH_SECRET` | 敏感密钥 (Secret) | **推荐** | 小本本专属通行暗号（直接输入明文或哈希） | `20240520` 或 `mysecret123` |
+| `JWT_SECRET` | 敏感密钥 (Secret) | 可选 | 认证 Token 签名密钥（留空则使用内置默认值） | `heng-jwt-token-key-2026` |
+| `APP_TITLE` | 普通变量 (Var) | 可选 | 小本本网页标题（`wrangler.toml` 已有默认值） | `记仇小本本` |
+| `USERS` | 普通变量 (Var) | 可选 | 两人昵称与颜色 JSON（直接在 `wrangler.toml` 修改） | `[{"name":"佩琪","color":"#e84393"},{"name":"乔治","color":"#0984e3"}]` |
 
-# 设置 JWT 签名密钥（输入任意随机长字符串）
-npx wrangler secret put JWT_SECRET
-```
+#### 配置方式（二选一）：
+
+* **方式 A：Cloudflare 网页控制台导入（Web Dashboard / Git 部署）**
+  * 在「变量名称」输入：`AUTH_SECRET`
+  * 在「变量值」输入：你们两人的私密暗号（如纪念日、密码）
+  * 点击下方 **「加密」** 按钮（作为加密 Secret 保存），然后直接点击 **「部署」** 即可。
+  * （`JWT_SECRET` 与其他变量非必填，未填时会自动使用内置默认值和 `wrangler.toml` 配置）。
+
+* **方式 B：本地终端命令行配置（Wrangler CLI）**
+  ```bash
+  # 设置通行暗号（直接输入明文或加盐哈希）
+  npx wrangler secret put AUTH_SECRET
+
+  # 设置 JWT 签名密钥（可选，输入任意随机字符串）
+  npx wrangler secret put JWT_SECRET
+  ```
 
 > **自定义昵称**：如果想修改两人的名字或颜色，直接编辑 `worker/wrangler.toml` 的 `[vars]` 里的 `USERS` 即可。
 
