@@ -1,0 +1,59 @@
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background: var(--bg-color, rgb(241, 242, 246));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  transition: opacity 0.8s ease-in-out;
+}
+
+.loading-screen--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 猪鼻子 */
+.pig-nose {
+  width: 100px;
+  height: 50px;
+  border-radius: 50px;
+  background: rgb(236, 143, 160);
+  border: 5px solid rgb(54, 49, 49);
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  animation: pig-bounce 3s ease-in-out infinite;
+  margin-bottom: 30px;
+}
+
+.pig-nose::before,
+.pig-nose::after {
+  content: "";
+  display: block;
+  width: 20%;
+  height: 60%;
+  background: rgb(54, 49, 49);
+  border-radius: 50%;
+}
+
+.loading-text {
+  font-size: 1.2rem;
+  color: var(--font-color, black);
+  text-align: center;
+}
+
+@keyframes pig-bounce {
+  0%, 100%   { transform: translateY(10px); }
+  5%, 15%, 25% { transform: translateY(-10px); }
+  10%, 20%, 30% { transform: translateY(10px); }
+  70%        { transform: translateY(10px); }
+  75%, 85%, 95% { transform: translateY(-10px); }
+  80%, 90%   { transform: translateY(10px); }
+}

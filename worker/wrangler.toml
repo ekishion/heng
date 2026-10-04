@@ -1,0 +1,56 @@
+name = "heng-api"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ─────────────────────────────────────────────────────────
+# Workers Static Assets — 原生托管前端静态资源（前后端同源，单命令部署）
+# ─────────────────────────────────────────────────────────
+[assets]
+directory = "./dist"
+not_found_handling = "single-page-application"
+
+# ─────────────────────────────────────────────────────────
+# D1 Database — 条目详情（结构化存储）
+# 创建命令:
+#   wrangler d1 create heng
+#   pnpm db:migrate        # 生产
+#   pnpm db:migrate:local  # 本地
+# ─────────────────────────────────────────────────────────
+[[d1_databases]]
+binding = "DB"
+database_name = "heng"
+database_id = "f59cfd00-7b9f-4ae2-9e56-53d90a6c7c06"
+
+# ─────────────────────────────────────────────────────────
+# R2 Bucket — 图片存储
+# ─────────────────────────────────────────────────────────
+[[r2_buckets]]
+binding = "R2"
+bucket_name = "heng-images"
+preview_bucket_name = "heng-images-preview"
+
+# ─────────────────────────────────────────────────────────
+# 公开配置变量（非敏感，可直接写在此处）
+# ─────────────────────────────────────────────────────────
+[vars]
+APP_TITLE = "记仇小本本"
+BOOK_TITLE = "记仇本本"
+PAGE_TITLE = "哼"
+PAGE_SUBTITLE = "点击就可以查看啦"
+PAGE_NONE = "这么清静？还不去记仇？"
+LOADING_TEXT = "正在打开小本本"
+ALLOWED_ORIGIN = "*"
+# 图片大小限制（字节），默认 5MB
+IMAGE_MAX_SIZE = "5242880"
+# 用户昵称与颜色印记（公开非敏感配置，修改昵称直接改这里即可）
+USERS = '[{"name":"佩琪","color":"#e84393"},{"name":"乔治","color":"#0984e3"}]'
+
+# ─────────────────────────────────────────────────────────
+# 敏感变量 — 使用 wrangler secret put 设置，不要写在这里
+# ─────────────────────────────────────────────────────────
+# npx wrangler secret put AUTH_SECRET
+# 输入属于你们两个人的专属通行暗号（如纪念日、专属密码，支持明文或哈希）
+#
+# npx wrangler secret put JWT_SECRET
+# 输入一段随机长字符串作为 Token 签名密钥

@@ -1,0 +1,462 @@
+/* 书本容器 */
+.book {
+  position: relative;
+  width: 350px;
+  height: 430px;
+  background: rgb(0, 99, 178);
+  border-radius: 50px 0 0 50px;
+  border: 15px solid black;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+}
+
+/* 白色底层装饰 */
+.book__white-bg {
+  position: absolute;
+  bottom: 3%;
+  right: 3%;
+  width: 91%;
+  height: 10%;
+  background: rgb(243, 243, 243);
+  border-radius: 50px 0 0 50px;
+}
+
+/* 通用书页层 */
+.book__layer {
+  position: absolute;
+  top: 0;
+  right: -2%;
+  width: 90%;
+  height: 87%;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transition: transform 1s cubic-bezier(0.78, -0.56, 0.24, 1.51);
+  border-left: 5px solid rgb(55, 151, 222);
+}
+
+.book__layer--open {
+  transform: rotateY(-160deg);
+  z-index: 1;
+}
+
+/* 封面 */
+.book__cover {
+  z-index: 3;
+  background: rgb(55, 151, 222);
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.book__cover p {
+  font-size: 2.8rem;
+  color: white;
+  margin-top: 20%;
+  backface-visibility: hidden;
+}
+
+/* 目录 & 内容页共同样式 */
+.book__list,
+.book__list-bg,
+.book__content {
+  width: 85%;
+  right: 3%;
+  background: white;
+  z-index: 2;
+  overflow-y: auto;
+}
+
+.book__list-bg {
+  z-index: 1;
+  cursor: pointer;
+}
+
+.book__list-bg--active {
+  z-index: 2;
+}
+
+.book__content {
+  z-index: 0;
+}
+
+/* 目录标题 */
+.book__title {
+  font-size: 2rem;
+  text-align: center;
+  margin: 20px 0 0;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+.book__subtitle {
+  color: gray;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 4px 0 8px;
+}
+
+/* 目录条目 */
+.book__item {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+.book__item p {
+  position: relative;
+  color: #ccc;
+  letter-spacing: 2px;
+}
+
+.book__item-title,
+.book__item-date {
+  background: white;
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  padding: 0 10px;
+  max-width: 55%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  transition: color 0.2s;
+}
+
+.book__item-title {
+  left: 0;
+}
+
+.book__item-date {
+  right: 0;
+  font-size: 0.8rem;
+  color: gray;
+  max-width: 40%;
+}
+
+.book__item:hover .book__item-title,
+.book__item:hover .book__item-date,
+.book__item:hover p {
+  color: rgb(55, 151, 222) !important;
+}
+
+.book__load-tip {
+  text-align: center;
+  color: gray;
+  margin: 10px 0;
+  font-size: 0.8rem;
+}
+
+.book__none {
+  text-align: center;
+  margin: 30px 0;
+  font-size: 1.2rem;
+  color: gray;
+}
+
+/* 内容页 */
+.book__content-inner {
+  padding: 20px 8%;
+}
+
+.book__meta {
+  color: gray;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 8px 0 16px;
+}
+
+.book__meta span {
+  margin: 0 8px;
+}
+
+.book__body {
+  line-height: 1.7;
+}
+
+.book__body p,
+.book__body h1,
+.book__body h2,
+.book__body h3,
+.book__body li {
+  font-weight: normal;
+  margin: 10px 0;
+}
+
+.book__body h1 { font-size: 1.3rem; }
+.book__body h2 { font-size: 1.2rem; }
+.book__body h3 { font-size: 1.1rem; }
+
+.book__body ul,
+.book__body ol {
+  margin: 10px 0 10px 15px;
+}
+
+.book__body blockquote {
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5;
+}
+
+.book__body img {
+  max-width: 100%;
+  margin: 20px 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.book__body table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.book__body th,
+.book__body td {
+  padding: 6px 13px;
+  border: 1px solid #dfe2e5;
+}
+
+.book__body tr:nth-child(even) {
+  background-color: #f6f8fa;
+}
+
+/* 移动端适配 */
+@media screen and (max-width: 600px) {
+  .book {
+    width: 260px;
+    height: 340px;
+  }
+
+  .book__title {
+    font-size: 1.5rem;
+  }
+
+  .book__item p {
+    display: none;
+  }
+
+  .book__item-title,
+  .book__item-date {
+    position: static;
+    display: block;
+    max-width: 100%;
+    background: transparent;
+    white-space: normal;
+  }
+
+  .book__item-date {
+    font-size: 0.75rem;
+  }
+}
+
+/* 和解印章 */
+.book__stamp {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border: 3px double #d63031;
+  color: #d63031;
+  font-size: 0.92rem;
+  font-weight: bold;
+  padding: 3px 10px;
+  border-radius: 6px;
+  transform: rotate(-12deg);
+  opacity: 0.9;
+  letter-spacing: 1px;
+  pointer-events: none;
+  user-select: none;
+  animation: stamp-drop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 0 0 1px rgba(214, 48, 49, 0.2);
+}
+
+@keyframes stamp-drop {
+  0% { transform: scale(2) rotate(0deg); opacity: 0; }
+  100% { transform: scale(1) rotate(-12deg); opacity: 0.9; }
+}
+
+.book__content-inner {
+  position: relative;
+}
+
+.book__item-resolved-tag {
+  font-size: 0.75rem;
+  margin-left: 6px;
+}
+
+.book__actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.book__btn-action {
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.book__btn-resolve {
+  border-color: rgba(46, 204, 113, 0.4);
+  background: rgba(46, 204, 113, 0.1);
+  color: #27ae60;
+}
+.book__btn-resolve:hover {
+  background: #27ae60;
+  color: white;
+}
+
+.book__btn-unresolve {
+  border-color: rgba(243, 156, 18, 0.4);
+  background: rgba(243, 156, 18, 0.1);
+  color: #d35400;
+}
+.book__btn-unresolve:hover {
+  background: #e67e22;
+  color: white;
+}
+
+.book__btn-delete {
+  border-color: rgba(231, 76, 60, 0.3);
+  background: rgba(231, 76, 60, 0.06);
+  color: #c0392b;
+}
+.book__btn-delete:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+/* 就地登录认证弹窗 */
+.book__auth-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+.book__auth-dialog {
+  background: var(--box-color, white);
+  width: 280px;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: fade-in 0.2s ease;
+}
+
+.book__auth-title {
+  margin: 0 0 12px 0;
+  font-size: 1.05rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.book__auth-users {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.book__auth-user-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  color: var(--font-color, black);
+}
+
+.book__auth-user-btn .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.book__auth-user-btn.active {
+  background: rgba(0, 0, 0, 0.08);
+  font-weight: bold;
+  border-width: 2px;
+}
+
+.book__auth-input {
+  width: 100%;
+  height: 36px;
+  border: none;
+  border-bottom: 1px solid #aaa;
+  outline: none;
+  font-size: 0.95rem;
+  margin-bottom: 16px;
+  background: transparent;
+  color: var(--font-color, black);
+  box-sizing: border-box;
+}
+
+.book__auth-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.book__auth-footer button {
+  padding: 5px 14px;
+  border-radius: 16px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.book__auth-ok {
+  background: #3498db !important;
+  color: white !important;
+  border-color: #3498db !important;
+}
+
+/* 原生图片大图全屏预览 Lightbox */
+.book__lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: zoom-out;
+}
+
+.book__lightbox-img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.book__lightbox-tip {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+}

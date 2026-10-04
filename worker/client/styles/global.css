@@ -1,0 +1,168 @@
+/* ===== 自定义手写字体 ===== */
+@font-face {
+  font-family: lovexhj;
+  src: url("/fonts/lovexhj.ttf");
+  font-display: swap;
+}
+
+/* ===== 全局重置 ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body, input, button, select, textarea {
+  font-family: lovexhj, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/* 保护字体图标库的 font-family 及其伪元素 ::before 不被通用字体覆盖 */
+[class^="w-e-icon-"], 
+[class*=" w-e-icon-"],
+.w-e-toolbar i,
+.w-e-menu i {
+  font-family: "w-e-icon" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="w-e-icon-"]::before, 
+[class*=" w-e-icon-"]::before,
+.w-e-toolbar i::before,
+.w-e-menu i::before {
+  font-family: "w-e-icon" !important;
+}
+
+html, body, #root {
+  height: 100%;
+  min-height: 700px;
+}
+
+/* ===== CSS 主题变量（默认亮色） ===== */
+:root {
+  --bg-color: rgb(241, 242, 246);
+  --box-color: white;
+  --font-color: black;
+  --load: rgba(211, 211, 211, 0.6);
+  --accent: rgb(55, 151, 222);
+}
+
+/* ===== 滚动条 ===== */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: #535353;
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: #ededed;
+}
+
+/* ===== 应用容器 ===== */
+#app {
+  position: relative;
+  height: 100%;
+  background: var(--bg-color);
+  transition: background 0.3s;
+}
+
+/* ===== 顶部标题栏 ===== */
+.app-header {
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: var(--font-color);
+}
+
+.app-title {
+  font-size: 2.3rem;
+}
+
+.theme-btn {
+  position: absolute;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+
+.theme-btn:hover {
+  background: rgba(128, 128, 128, 0.15);
+}
+
+/* ===== 主体：面板滑轨 ===== */
+.app-body {
+  width: 100%;
+  height: calc(100% - 90px);
+  overflow: hidden;
+  position: relative;
+}
+
+.panel-track {
+  width: 200%;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  transition: transform 0.4s ease-in-out;
+}
+
+.panel {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding-bottom: 70px;
+}
+
+/* ===== 切换按钮 ===== */
+.switch-btn {
+  position: absolute;
+  bottom: 8%;
+  padding: 10px 30px;
+  font-size: 1.2rem;
+  color: var(--accent);
+  background: transparent;
+  border: 3px solid var(--accent);
+  border-radius: 30px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.switch-btn:hover {
+  color: white;
+  background: var(--accent);
+}
+
+/* ===== 移动端 ===== */
+@media screen and (max-width: 600px) {
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .panel {
+    width: 100%;
+  }
+
+  .panel-track {
+    width: 200%;
+  }
+}
