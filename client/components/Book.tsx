@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { createPortal } from "react-dom";
 import DOMPurify from "dompurify";
 import type { EntryIndex, Entry, AppConfig } from "../types";
 import { fetchEntryDetail, deleteEntry, resolveEntry, login, getToken } from "../api/client";
@@ -55,9 +56,19 @@ export default function Book({
   }, [listOpen]);
 
   const handleSelectEntry = useCallback(async (entry: EntryIndex) => {
-    setListOpen(false);
+    setListOpen(true);
+    setSelectedEntry({
+      id: entry.id,
+      title: entry.title,
+      author: entry.author,
+      created_at: entry.created_at,
+      resolved_at: entry.resolved_at,
+      body: '<div style="text-align:center;color:gray;padding:20px;">正在打开记录...</div>',
+    });
     const res = await fetchEntryDetail(entry.id);
-    if (res.success) setSelectedEntry(res.data);
+    if (res.success && res.data) {
+      setSelectedEntry(res.data);
+    }
   }, []);
 
   const handleListBgClick = useCallback(() => {
@@ -201,95 +212,105 @@ export default function Book({
       />
 
       {/* 内容页 */}
-      <div className="book__layer book__content">
-        {selectedEntry ? (
-          <div className="book__content-inner">
-            {/* 和解印章 */}
-            {selectedEntry.resolved_at && (
-              <div className="book__stamp">❤️ 已和解 · 翻篇啦</div>
-            )}
-
-            <p className="book__title">{selectedEntry.title}</p>
-            <div className="book__meta">
-              <span>👤 {selectedEntry.author}</span>
-              <span>📅 {new Date(selectedEntry.created_at).toLocaleDateString("zh-CN")}</span>
-
-              {/* 盖章与删除操作栏 */}
-              <div className="book__actions">
-                {selectedEntry.resolved_at ? (
-                  <button
-                    type="button"
-                    className="book__btn-action book__btn-unresolve"
-                    onClick={() => handleAction("unresolve")}
-                    title="撤销和解印章"
-                  >
-                    ↩️ 撤销和解
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className="book__btn-action book__btn-resolve"
-                    onClick={() => handleAction("resolve")}
-                    title="盖上和解印章"
-                  >
-                    🕊️ 和解盖章
-                  </button>
-                )}
-                <button
-                  type="button"
-                  className="book__btn-action book__btn-delete"
-                  onClick={() => handleAction("delete")}
-                  title="彻底抹除此条记录"
-                >
-                  🗑️
-                </button>
-              </div>
-            </div>
-
-            <div
-              className="book__body"
-              onClick={handleBodyClick}
-              dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(selectedEntry.body, {
-                  ADD_ATTR: ["target"],
-                }),
-              }}
-            />
+      <div className={`book__layer book__content ${listOpen ? "book__content--active" : ""}`}>
+        <div className="book__content-inner">
+          <div className="book__back-btn" onClick={() => setListOpen(false)} title="返回目录页">
+            👈 返回目录
           </div>
-        ) : (
-          <p className="book__none">点击目录选择一条记仇</p>
-        )}
+
+          {selectedEntry ? (
+            <>
+              {/* 和解印章 */}
+              {selectedEntry.resolved_at && (
+                <div className="book__stamp">❤️ 已和解 · 翻篇啦</div>
+              )}
+
+              <p className="book__title">{selectedEntry.title}</p>
+              <div className="book__meta">
+                <span>👤 {selectedEntry.author}</span>
+                <span>📅 {new Date(selectedEntry.created_at).toLocaleDateString("zh-CN")}</span>
+
+                {/* 盖章与删除操作栏 */}
+                <div className="book__actions">
+                  {selectedEntry.resolved_at ? (
+                    <button
+                      type="button"
+                      className="book__btn-action book__btn-unresolve"
+                      onClick={() => handleAction("unresolve")}
+                      title="撤销和解印章"
+                    >
+                      ↩️ 撤销和解
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="book__btn-action book__btn-resolve"
+                      onClick={() => handleAction("resolve")}
+                      title="盖上和解印章"
+                    >
+                      🕊️ 和解盖章
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="book__btn-action book__btn-delete"
+                    onClick={() => handleAction("delete")}
+                    title="彻底抹除此条记录"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </div>
+
+              <div
+                className="book__body"
+                onClick={handleBodyClick}
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(selectedEntry.body, {
+                    ADD_ATTR: ["target"],
+                  }),
+                }}
+              />
+            </>
+          ) : (
+            <p className="book__none">点击目录选择一条记仇</p>
+          )}
+        </div>
       </div>
 
       {/* 就地快速认证弹窗（无需翻页） */}
-      {showAuthModal && (
-        <div className="book__auth-overlay" onClick={() => setShowAuthModal(false)}>
-          <div className="book__auth-dialog" onClick={(e) => e.stopPropagation()}>
-            <p className="book__auth-title">输入小本本专属暗号</p>
-            <input
-              type="password"
-              className="book__auth-input"
-              placeholder="输入属于你们的暗号丫！"
-              value={authPwd}
-              onChange={(e) => setAuthPwd(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleAuthSubmit()}
-              autoFocus
-            />
-            <div className="book__auth-footer">
-              <button type="button" onClick={() => setShowAuthModal(false)}>取消</button>
-              <button type="button" className="book__auth-ok" onClick={handleAuthSubmit}>解锁</button>
+      {showAuthModal &&
+        createPortal(
+          <div className="book__auth-overlay" onClick={() => setShowAuthModal(false)}>
+            <div className="book__auth-dialog" onClick={(e) => e.stopPropagation()}>
+              <p className="book__auth-title">输入小本本专属暗号</p>
+              <input
+                type="password"
+                className="book__auth-input"
+                placeholder="输入属于你们的暗号丫！"
+                value={authPwd}
+                onChange={(e) => setAuthPwd(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleAuthSubmit()}
+                autoFocus
+              />
+              <div className="book__auth-footer">
+                <button type="button" onClick={() => setShowAuthModal(false)}>取消</button>
+                <button type="button" className="book__auth-ok" onClick={handleAuthSubmit}>解锁</button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       {/* 原生图片全屏大图预览 Lightbox */}
-      {previewImg && (
-        <div className="book__lightbox" onClick={() => setPreviewImg(null)}>
-          <img src={previewImg} alt="预览图片" className="book__lightbox-img" />
-          <span className="book__lightbox-tip">点击任意处关闭</span>
-        </div>
-      )}
+      {previewImg &&
+        createPortal(
+          <div className="book__lightbox" onClick={() => setPreviewImg(null)}>
+            <img src={previewImg} alt="预览图片" className="book__lightbox-img" />
+            <span className="book__lightbox-tip">点击任意处关闭</span>
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

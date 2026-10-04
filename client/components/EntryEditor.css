@@ -338,21 +338,24 @@
 .editor__pwd-overlay {
   position: fixed;
   top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.4);
-  z-index: 9999;
+  width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 99999;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .editor__pwd-dialog {
-  background: white;
+  background: var(--box-color, white);
+  color: var(--font-color, black);
   border-radius: 12px;
   padding: 24px;
   width: 320px;
   max-width: 90vw;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+  animation: fade-in 0.2s ease;
 }
 
 .editor__pwd-title {
@@ -368,8 +371,10 @@
   font-size: 1rem;
   outline: none;
   border: none;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #888;
   box-sizing: border-box;
+  background: transparent;
+  color: var(--font-color, black);
 }
 
 .editor__pwd-remember {
@@ -377,8 +382,9 @@
   align-items: center;
   gap: 8px;
   font-size: 0.85rem;
-  color: #666;
-  margin-bottom: 16px;
+  color: var(--font-color, #666);
+  opacity: 0.85;
+  margin: 14px 0 16px;
   cursor: pointer;
   user-select: none;
 }
@@ -396,18 +402,27 @@
 .editor__pwd-footer button {
   padding: 8px 20px;
   border-radius: 20px;
-  border: 1px solid #ddd;
+  border: 1px solid rgba(128, 128, 128, 0.3);
   cursor: pointer;
   font-family: inherit;
   font-size: 0.9rem;
-  background: white;
+  background: transparent;
+  color: var(--font-color, black);
   transition: all 0.2s;
+}
+
+.editor__pwd-footer button:hover {
+  background: rgba(128, 128, 128, 0.15);
 }
 
 .editor__pwd-ok {
   background: rgb(55, 151, 222) !important;
   color: white !important;
   border-color: rgb(55, 151, 222) !important;
+}
+
+.editor__pwd-ok:hover {
+  opacity: 0.9;
 }
 
 /* 暗色模式适配 */

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import type { UserConfig } from "../types";
 import { createEntry, uploadImage, login, fetchMe, clearToken, getToken } from "../api/client";
 import "./EntryEditor.css";
@@ -496,34 +497,36 @@ export default function EntryEditor({ users, onSuccess }: Props) {
       </div>
 
       {/* 空间暗号解锁弹窗 */}
-      {showPwd && (
-        <div className="editor__pwd-overlay" onClick={() => setShowPwd(false)}>
-          <div className="editor__pwd-dialog" onClick={(e) => e.stopPropagation()}>
-            <p className="editor__pwd-title">输入小本本专属暗号</p>
-            <input
-              type="password"
-              className="editor__pwd-input"
-              placeholder="输入属于你们的暗号丫！"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleUnlockConfirm()}
-              autoFocus
-            />
-            <label className="editor__pwd-remember">
+      {showPwd &&
+        createPortal(
+          <div className="editor__pwd-overlay" onClick={() => setShowPwd(false)}>
+            <div className="editor__pwd-dialog" onClick={(e) => e.stopPropagation()}>
+              <p className="editor__pwd-title">输入小本本专属暗号</p>
               <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
+                type="password"
+                className="editor__pwd-input"
+                placeholder="输入属于你们的暗号丫！"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleUnlockConfirm()}
+                autoFocus
               />
-              <span>在此设备保持解锁 (30天)</span>
-            </label>
-            <div className="editor__pwd-footer">
-              <button onClick={() => setShowPwd(false)}>取消</button>
-              <button className="editor__pwd-ok" onClick={handleUnlockConfirm}>解锁小本本</button>
+              <label className="editor__pwd-remember">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                />
+                <span>在此设备保持解锁 (30天)</span>
+              </label>
+              <div className="editor__pwd-footer">
+                <button type="button" onClick={() => setShowPwd(false)}>取消</button>
+                <button type="button" className="editor__pwd-ok" onClick={handleUnlockConfirm}>解锁小本本</button>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

@@ -78,6 +78,29 @@
   z-index: 0;
 }
 
+.book__content--active {
+  z-index: 1;
+}
+
+/* 返回目录按钮 */
+.book__back-btn {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  color: rgb(55, 151, 222);
+  font-size: 0.85rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  user-select: none;
+  transition: all 0.2s;
+  font-weight: bold;
+}
+
+.book__back-btn:hover {
+  background: rgba(55, 151, 222, 0.12);
+}
+
 /* 目录标题 */
 .book__title {
   font-size: 2rem;
