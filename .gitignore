@@ -15,7 +15,6 @@ dist/
 .dev.vars
 .dev.vars.*
 *.local
-worker/.dev.vars
 
 # 编辑器与系统文件
 .idea/

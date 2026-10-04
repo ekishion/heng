@@ -21,30 +21,27 @@
 ```
 heng/
 ├── LICENSE                   # MIT 开源协议
-├── package.json              # 根便捷脚本
+├── package.json              # 项目依赖与全局脚本
+├── wrangler.toml             # Cloudflare D1 / R2 / 静态资源配置
+├── vite.config.ts            # 前端构建配置
+├── tsconfig.json             # Worker 后端 TypeScript 配置
+├── tsconfig.client.json      # 前端 React TypeScript 配置
 ├── README.md
 │
-└── worker/                   # 核心工程
-    ├── package.json          # 依赖与脚本
-    ├── wrangler.toml         # D1 / R2 / 静态资源配置
-    ├── vite.config.ts        # 前端构建配置
-    ├── tsconfig.json         # Worker TypeScript 配置
-    ├── tsconfig.client.json  # 前端 TypeScript 配置
-    │
-    ├── scripts/
-    │   └── hash-pwd.mjs      # 密码加盐哈希辅助脚本（可选）
-    │
-    ├── src/                  # 后端源码 (Hono)
-    │   ├── index.ts          # 路由聚合与静态资源服务
-    │   ├── routes/           # 认证、条目与图片代理路由
-    │   ├── storage/          # D1 与 R2 数据访问层
-    │   ├── middleware/       # 权限与参数校验中间件
-    │   └── db/schema.sql     # D1 数据库表结构
-    │
-    └── client/               # 前端源码 (React 18 + TS)
-        ├── api/client.ts     # API 客户端请求封装
-        ├── components/       # 3D 翻页书本、原生编辑器、开屏动画
-        └── hooks/            # 配置、主题与分页钩子
+├── scripts/
+│   └── hash-pwd.mjs          # 密码加盐哈希辅助脚本（可选）
+│
+├── src/                      # 后端源码 (Hono)
+│   ├── index.ts              # 路由聚合与静态资源服务
+│   ├── routes/               # 认证、条目与图片代理路由
+│   ├── storage/              # D1 与 R2 数据访问层
+│   ├── middleware/           # 权限与参数校验中间件
+│   └── db/schema.sql         # D1 数据库表结构
+│
+└── client/                   # 前端源码 (React 18 + TS)
+    ├── api/client.ts         # API 客户端请求封装
+    ├── components/           # 3D 翻页书本、原生编辑器、开屏动画
+    └── hooks/                # 配置、主题与分页钩子
 ```
 
 ---
@@ -91,7 +88,7 @@ npx wrangler r2 bucket create heng-images
 npx wrangler r2 bucket create heng-images-preview
 ```
 
-将命令输出的 `database_id` 填入 `worker/wrangler.toml` 中的 `database_id`。
+将命令输出的 `database_id` 填入 `wrangler.toml` 中的 `database_id`。
 
 ### 3. 初始化数据库表结构
 
@@ -127,7 +124,7 @@ pnpm db:migrate
   npx wrangler secret put JWT_SECRET
   ```
 
-> **自定义昵称**：如果想修改两人的名字或颜色，直接编辑 `worker/wrangler.toml` 的 `[vars]` 里的 `USERS` 即可。
+> **自定义昵称**：如果想修改两人的名字或颜色，直接编辑 `wrangler.toml` 的 `[vars]` 里的 `USERS` 即可。
 
 ### 5. 一键发布
 

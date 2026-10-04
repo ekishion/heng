@@ -9,7 +9,7 @@ export default defineConfig({
   // 静态资源目录（相对于 root）
   publicDir: "../public",
   build: {
-    // 构建产物输出到 worker/dist/，CF Pages 配置 output dir 为 dist
+    // 构建产物输出到 dist/ 目录
     outDir: "../dist",
     emptyOutDir: true,
   },
