@@ -28,7 +28,6 @@ database_id = "f59cfd00-7b9f-4ae2-9e56-53d90a6c7c06"
 [[r2_buckets]]
 binding = "R2"
 bucket_name = "heng-images"
-preview_bucket_name = "heng-images-preview"
 
 # ─────────────────────────────────────────────────────────
 # 公开配置变量（非敏感，可直接写在此处）

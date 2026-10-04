@@ -83,9 +83,8 @@ pnpm cf:login
 # 创建 D1 数据库
 npx wrangler d1 create heng
 
-# 创建 R2 存储桶
+# 创建 R2 存储桶（存插图）
 npx wrangler r2 bucket create heng-images
-npx wrangler r2 bucket create heng-images-preview
 ```
 
 将命令输出的 `database_id` 填入 `wrangler.toml` 中的 `database_id`。
